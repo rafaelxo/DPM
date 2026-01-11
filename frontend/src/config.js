@@ -2,5 +2,5 @@
 const isProd = import.meta.env. PROD;
 
 export const API_URL = isProd
-  ? 'https://seu-backend.onrender.com/api'  // Vamos criar isso já já
+  ? 'https://github-dashboard-backend-gea7.onrender.com/api'
   : 'http://localhost:5000/api';
