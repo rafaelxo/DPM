@@ -4,14 +4,15 @@ package-lock.json
 
 # Environment variables
 .env
-. env.local
-.env.*. local
+.env.local
+.env.*.local
+backend/.env
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-*. log
+*.log
 
 # OS
 .DS_Store
