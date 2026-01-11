@@ -1,5 +1,14 @@
 function TopRepos({ repos }) {
-  if (!repos) return null;
+  if (!repos || repos.length === 0) {
+    return (
+      <div className="card top-repos">
+        <h3>🏆 Top Repositórios</h3>
+        <p style={{ color:  '#666', textAlign: 'center', padding: '20px' }}>
+          Nenhum repositório encontrado
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="card top-repos">
@@ -8,7 +17,7 @@ function TopRepos({ repos }) {
         {repos.map((repo) => (
           <a
             key={repo.id}
-            href={repo. html_url}
+            href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
             className="repo-item"
@@ -18,13 +27,20 @@ function TopRepos({ repos }) {
               <span className="repo-stars">⭐ {repo.stargazers_count}</span>
             </div>
             {repo.description && (
-              <p className="repo-description">{repo.description}</p>
+              <p className="repo-description">
+                {repo.description. length > 100
+                  ? repo.description.substring(0, 100) + '...'
+                  : repo.description}
+              </p>
             )}
             <div className="repo-footer">
               {repo.language && (
                 <span className="repo-language">💻 {repo.language}</span>
               )}
               <span className="repo-forks">🔱 {repo.forks_count}</span>
+              {repo.open_issues_count > 0 && (
+                <span>🎯 {repo.open_issues_count} issues</span>
+              )}
             </div>
           </a>
         ))}

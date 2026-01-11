@@ -13,6 +13,7 @@ function App() {
   const [stats, setStats] = useState(null);
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -21,24 +22,29 @@ function App() {
   const fetchData = async () => {
     try {
       setLoading(true);
+      setError(null);
 
       // Busca dados do usuário
       const userRes = await fetch(`${API_URL}/user`);
+      if (!userRes.ok) throw new Error('Erro ao buscar dados do usuário');
       const userData = await userRes.json();
       setUser(userData);
 
       // Busca estatísticas
       const statsRes = await fetch(`${API_URL}/stats`);
-      const statsData = await statsRes.json();
+      if (!statsRes.ok) throw new Error('Erro ao buscar estatísticas');
+      const statsData = await statsRes. json();
       setStats(statsData);
 
       // Busca issues abertas
       const issuesRes = await fetch(`${API_URL}/issues`);
+      if (!issuesRes.ok) throw new Error('Erro ao buscar issues');
       const issuesData = await issuesRes.json();
       setIssues(issuesData);
 
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -49,6 +55,18 @@ function App() {
       <div className="loading">
         <div className="spinner"></div>
         <p>Carregando seu dashboard...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error">
+        <h2>❌ Erro ao carregar dados</h2>
+        <p>{error}</p>
+        <button onClick={fetchData} className="retry-btn">
+          🔄 Tentar Novamente
+        </button>
       </div>
     );
   }
@@ -71,6 +89,10 @@ function App() {
         </div>
         <OpenIssues issues={issues} />
       </main>
+
+      <footer>
+        <p>Feito com ❤️ usando a API do GitHub | <a href="https://github.com/rafaelxo/DPM" target="_blank" rel="noopener noreferrer">Ver no GitHub</a></p>
+      </footer>
     </div>
   );
 }
