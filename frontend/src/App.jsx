@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import { API_URL } from './config';  // Importa a config
 import UserProfile from './components/UserProfile';
 import StatsCards from './components/StatsCards';
 import LanguageChart from './components/LanguageChart';
 import TopRepos from './components/TopRepos';
 import OpenIssues from './components/OpenIssues';
-
-const API_URL = 'http://localhost:5000/api';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,7 +32,7 @@ function App() {
       // Busca estatísticas
       const statsRes = await fetch(`${API_URL}/stats`);
       if (!statsRes.ok) throw new Error('Erro ao buscar estatísticas');
-      const statsData = await statsRes. json();
+      const statsData = await statsRes.json();
       setStats(statsData);
 
       // Busca issues abertas

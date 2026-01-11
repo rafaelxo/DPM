@@ -6,13 +6,20 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middlewares
-app.use(cors());
+// Middlewares - CORS configurado para produção
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://rafaelxo.github.io'
+  ],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Inicializa Octokit com o token do GitHub
 const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN
+  auth: process.env. GITHUB_TOKEN
 });
 
 // Rota de teste
@@ -43,7 +50,7 @@ app.get('/api/user', async (req, res) => {
   }
 });
 
-// Rota:  Repositórios do usuário
+// Rota: Repositórios do usuário
 app. get('/api/repos', async (req, res) => {
   try {
     const { data } = await octokit.rest. repos.listForAuthenticatedUser({
@@ -64,7 +71,7 @@ app. get('/api/repos', async (req, res) => {
 app.get('/api/commits/:owner/:repo', async (req, res) => {
   try {
     const { owner, repo } = req.params;
-    const { data } = await octokit.rest.repos.listCommits({
+    const { data } = await octokit.rest.repos. listCommits({
       owner,
       repo,
       per_page: 100
@@ -152,7 +159,7 @@ app.get('/api/issues', async (req, res) => {
 app.get('/api/activity', async (req, res) => {
   try {
     const user = await octokit.rest. users.getAuthenticated();
-    const { data } = await octokit. rest.activity.listPublicEventsForUser({
+    const { data } = await octokit.rest.activity.listPublicEventsForUser({
       username: user.data.login,
       per_page: 30
     });
